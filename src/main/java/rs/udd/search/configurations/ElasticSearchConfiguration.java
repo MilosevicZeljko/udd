@@ -129,6 +129,13 @@ public class ElasticSearchConfiguration extends AbstractElasticsearchConfigurati
                         xContentBuilder.field( "analyzer", "serbian" );
                     }
                     xContentBuilder.endObject();
+                    // ! --------------------------------------
+                    xContentBuilder.startObject( "point" );
+                    {
+                        xContentBuilder.field( "type", "geo_point" );
+                        xContentBuilder.field( "store", "true" );
+                    }
+                    xContentBuilder.endObject();
                 }
                 xContentBuilder.endObject();
 

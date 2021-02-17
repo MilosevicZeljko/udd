@@ -13,6 +13,8 @@ public class BetaReader
 
     public static final String INDEX = "beta";
 
+    public static Integer idInt = 1;
+
     private String id;
 
     private GeoPoint point;

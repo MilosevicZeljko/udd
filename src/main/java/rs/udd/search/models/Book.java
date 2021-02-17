@@ -1,5 +1,8 @@
 package rs.udd.search.models;
 
+import org.springframework.data.elasticsearch.core.geo.GeoPoint;
+
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +20,8 @@ public class Book
     private String authorFirstName;
 
     private String authorLastName;
+
+    private GeoPoint point;
 
     private String title;
 
