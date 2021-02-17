@@ -24,4 +24,6 @@ public class Book
 
     private String textContent;
 
+    private String url = "localhost:8080/api/book/";
+
 }

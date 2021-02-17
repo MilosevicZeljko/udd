@@ -122,6 +122,13 @@ public class ElasticSearchConfiguration extends AbstractElasticsearchConfigurati
                     }
                     xContentBuilder.endObject();
                     // ! --------------------------------------
+                    xContentBuilder.startObject( "url" );
+                    {
+                        xContentBuilder.field( "type", "text" );
+                        xContentBuilder.field( "store", "true" );
+                        xContentBuilder.field( "analyzer", "serbian" );
+                    }
+                    xContentBuilder.endObject();
                 }
                 xContentBuilder.endObject();
 
