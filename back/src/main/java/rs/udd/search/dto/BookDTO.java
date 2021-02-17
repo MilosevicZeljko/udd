@@ -25,4 +25,8 @@ public class BookDTO
 
     private String genre;
 
+    private Float latitude;
+
+    private Float longitude;
+
 }

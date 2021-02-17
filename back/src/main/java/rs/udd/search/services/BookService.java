@@ -26,6 +26,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -70,6 +71,7 @@ public class BookService
         newBook.setIsbn( book.getIsbn() );
         newBook.setTitle( book.getTitle() );
         newBook.setUrl( newBook.getUrl() + newBook.getId() );
+        newBook.setPoint( new GeoPoint( book.getLatitude(), book.getLongitude() ) );
 
         File convertedFile = convert( book.getFile() );
         newBook.setTextContent( handler.getText( convertedFile ) );
