@@ -3,6 +3,8 @@ package rs.udd.search.services;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +28,10 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -46,6 +51,8 @@ import rs.udd.search.models.Book;
 @Service
 public class BookService
 {
+
+    private final Path root = Paths.get( "pdf" );
 
     final private static String[] FETCH_FIELDS =
     { "id", "filename", "textContent", "authorFirstName", "isbn", "authorLastName", "title", "genre", "url" };
@@ -275,11 +282,23 @@ public class BookService
     {
 
         File convertedFile = new File( "pdf" + File.separator + file.getOriginalFilename() );
+        System.err.println( convertedFile.getAbsolutePath() );
         convertedFile.createNewFile();
         FileOutputStream fos = new FileOutputStream( convertedFile );
         fos.write( file.getBytes() );
         fos.close();
         return convertedFile;
+
+    }
+
+
+    public ResponseEntity< ? > download( String name ) throws IOException
+    {
+
+        Path file = Paths.get( "pdf" ).resolve( name );
+        Resource resource = new UrlResource( file.toUri() );
+
+        return ResponseEntity.ok().header( HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"" ).body( resource );
 
     }
 
