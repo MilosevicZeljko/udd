@@ -18,6 +18,7 @@ export const CreateReader = (props) => {
 		formValues.lon = longitude;
 		props.createReader(formValues);
 	};
+
 	return (
 		<div className='ui container'>
 			<Segment>

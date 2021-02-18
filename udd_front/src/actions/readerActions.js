@@ -28,3 +28,7 @@ export const searchReaders = (lat, lon, distance) => async (dispatch) => {
 			console.log(error);
 		});
 };
+
+export const clearReaders = () => ({
+	type: 'CLEAR_READERS',
+});

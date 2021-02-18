@@ -15,8 +15,6 @@ public class BookDTO
 
     private String title;
 
-    private String id;
-
     private String authorFirstName;
 
     private String authorLastName;

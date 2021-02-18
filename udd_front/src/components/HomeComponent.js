@@ -8,7 +8,9 @@ export default function HomeComponent() {
 					<header>
 						<div className='hero-content'>
 							<h1>УДД</h1>
-							<p>Претраживање и индексирање књига</p>
+							<p>
+								Претраживање и индексирање књига<br />ЦСС лвл 1000
+							</p>
 						</div>
 					</header>
 				</div>

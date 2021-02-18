@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Card, Grid, Segment } from 'semantic-ui-react';
-import { searchReaders } from '../../actions/readerActions';
+import { clearReaders, searchReaders } from '../../actions/readerActions';
 import Map from '../Map';
 import OneReader from './OneReader';
 import './SearchReader.css';
@@ -16,8 +16,15 @@ function SearchReader(props) {
 
 	const startSearch = () => {
 		props.searchReaders(latitude, longitude, distance);
-		console.log('search bro');
 	};
+
+	useEffect(() => {
+		console.log('only once');
+		return () => {
+			console.log('cleanup');
+			props.clearReaders();
+		};
+	}, []);
 
 	return (
 		<Grid columns={2} className='ui container'>
@@ -91,6 +98,6 @@ const mapStateToProps = (state) => ({
 	readers: state.readers.readers,
 });
 
-const mapDispatchToProps = { searchReaders };
+const mapDispatchToProps = { searchReaders, clearReaders };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchReader);
