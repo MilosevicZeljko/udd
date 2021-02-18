@@ -23,6 +23,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
@@ -35,6 +36,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -52,8 +54,6 @@ import rs.udd.search.models.Book;
 public class BookService
 {
 
-    private final Path root = Paths.get( "pdf" );
-
     final private static String[] FETCH_FIELDS =
     { "id", "filename", "textContent", "authorFirstName", "isbn", "authorLastName", "title", "genre", "url" };
 
@@ -66,6 +66,24 @@ public class BookService
      * @throws IOException
      */
     public ResponseEntity< ? > create( BookDTO book ) throws IOException
+    {
+        Book newBook = _createNewBook( book );
+
+        IndexRequest indexRequest = new IndexRequest( Book.INDEX );
+        indexRequest.id( newBook.getId() );
+
+        String json = new Gson().toJson( newBook );
+
+        indexRequest.source( json, XContentType.JSON );
+
+        IndexResponse index = restHighLevelClient.index( indexRequest, RequestOptions.DEFAULT );
+
+        return new ResponseEntity< IndexResponse >( index, HttpStatus.CREATED );
+
+    }
+
+
+    private Book _createNewBook( BookDTO book ) throws IOException
     {
         DocumentHandler handler = getHandler( book.getFile().getOriginalFilename() );
 
@@ -82,17 +100,7 @@ public class BookService
 
         File convertedFile = convert( book.getFile() );
         newBook.setTextContent( handler.getText( convertedFile ) );
-
-        IndexRequest indexRequest = new IndexRequest( Book.INDEX );
-        indexRequest.id( newBook.getId() );
-
-        String json = new Gson().toJson( newBook );
-
-        indexRequest.source( json, XContentType.JSON );
-
-        IndexResponse index = restHighLevelClient.index( indexRequest, RequestOptions.DEFAULT );
-
-        return new ResponseEntity< IndexResponse >( index, HttpStatus.CREATED );
+        return newBook;
 
     }
 
@@ -300,6 +308,61 @@ public class BookService
 
         return ResponseEntity.ok().header( HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"" ).body( resource );
 
+    }
+
+
+    public ResponseEntity< ? > plagiarism( @RequestBody BookDTO book ) throws IOException
+    {
+
+        Book newBook = _createNewBook( book );
+        SearchRequest searchRequest = new SearchRequest();
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        MatchQueryBuilder matchQuery = QueryBuilders.matchQuery( "textContent", newBook.getTextContent() ).minimumShouldMatch( "50%" );
+
+        HighlightBuilder highlightBuilder = new HighlightBuilder();
+        HighlightBuilder.Field highlightContent = new HighlightBuilder.Field( "textContent" );
+        highlightContent.highlighterType( "unified" );
+        highlightContent.highlighterType( "unified" );
+
+        searchSourceBuilder.query( matchQuery ).fetchSource( FETCH_FIELDS, null ).highlighter( highlightBuilder );
+
+        searchRequest.indices( Book.INDEX );
+        searchRequest.source( searchSourceBuilder );
+
+        SearchResponse search = restHighLevelClient.search( searchRequest, RequestOptions.DEFAULT );
+
+        ArrayList< Book > returnValues = new ArrayList<>();
+
+        search.getHits().forEach( hit ->
+        {
+            Map< String, HighlightField > highlightFields = hit.getHighlightFields();
+            HighlightField highlightField = highlightFields.get( "textContent" );
+
+            Book currentBook = new Gson().fromJson( hit.getSourceAsString(), Book.class );
+
+            if ( Optional.ofNullable( highlightField ).isPresent() )
+            {
+                Text[] fragments = highlightField.fragments();
+                String contentHighlight = "";
+                for ( Text text : fragments )
+                {
+                    contentHighlight = contentHighlight + text.toString() + "\n";
+                }
+                currentBook.setTextContent( contentHighlight );
+            }
+            else
+            {
+                currentBook.setTextContent( currentBook.getTextContent().substring( 0, 200 ) + " ..." );
+            }
+            returnValues.add( currentBook );
+
+        } );
+
+        return new ResponseEntity<>( returnValues, HttpStatus.OK );
+
+        // return null;
     }
 
 }

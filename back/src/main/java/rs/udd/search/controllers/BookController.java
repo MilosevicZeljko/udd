@@ -34,6 +34,14 @@ public class BookController
     }
 
 
+    @PostMapping( "/check" )
+    public ResponseEntity< ? > checkPlagiarism( BookDTO book ) throws IOException
+    {
+        return this.service.plagiarism( book );
+
+    }
+
+
     @GetMapping( "/" )
     public ResponseEntity< ? > retrieve() throws IOException
     {
