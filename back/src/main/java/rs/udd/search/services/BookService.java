@@ -324,7 +324,6 @@ public class BookService
         HighlightBuilder highlightBuilder = new HighlightBuilder();
         HighlightBuilder.Field highlightContent = new HighlightBuilder.Field( "textContent" );
         highlightContent.highlighterType( "unified" );
-        highlightContent.highlighterType( "unified" );
 
         searchSourceBuilder.query( matchQuery ).fetchSource( FETCH_FIELDS, null ).highlighter( highlightBuilder );
 

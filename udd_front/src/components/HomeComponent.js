@@ -7,11 +7,8 @@ export default function HomeComponent() {
 				<div className='wrapper'>
 					<header>
 						<div className='hero-content'>
-							<h1>Search books and stuff</h1>
-							<p>
-								Seriously! Books, Readers, you name it<br />The best css
-								is no css!
-							</p>
+							<h1>УДД</h1>
+							<p>Претраживање и индексирање књига</p>
 						</div>
 					</header>
 				</div>
