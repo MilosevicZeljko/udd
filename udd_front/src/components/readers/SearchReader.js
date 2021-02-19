@@ -82,6 +82,7 @@ function SearchReader(props) {
 					{props.readers.map((r) => {
 						return (
 							<OneReader
+								key={r.firstName + r.lastName + r.email}
 								firstName={r.firstName}
 								lastName={r.lastName}
 								email={r.email}
