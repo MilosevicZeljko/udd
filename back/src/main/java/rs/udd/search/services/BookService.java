@@ -153,6 +153,8 @@ public class BookService
                 if ( phrase )
                 {
                     boolQuery.should( QueryBuilders.matchPhrasePrefixQuery( field, value ) );
+                    // boolQuery.should( QueryBuilders.matchPhraseQuery( field, value ) );
+
                 }
                 else
                 {

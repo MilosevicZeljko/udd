@@ -47,20 +47,26 @@ const CheckPlagiarism = (props) => {
 					<Header as='h2'>Кандидати</Header>
 				</Divider>
 				<Card.Group itemsPerRow={2}>
-					{props.books.map((i) => {
-						return (
-							<OneBook
-								key={i.textContent + i.id + i.authorFirstName}
-								isbn={i.isbn}
-								authorFirstName={i.authorFirstName}
-								authorLastName={i.authorLastName}
-								title={i.title}
-								genre={i.genre}
-								textContent={i.textContent}
-								url={i.url}
-							/>
-						);
-					})}
+					{props.books.length > 0 ? (
+						props.books.map((i) => {
+							return (
+								<OneBook
+									key={i.textContent + i.id + i.authorFirstName}
+									isbn={i.isbn}
+									authorFirstName={i.authorFirstName}
+									authorLastName={i.authorLastName}
+									title={i.title}
+									genre={i.genre}
+									textContent={i.textContent}
+									url={i.url}
+								/>
+							);
+						})
+					) : (
+						<Divider horizontal>
+							<Header as='h5'>Нема Кандидата</Header>
+						</Divider>
+					)}
 				</Card.Group>
 			</form>
 		</div>

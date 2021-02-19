@@ -60,7 +60,7 @@ public class ReaderService
     {
         SearchRequest searchRequest = new SearchRequest();
 
-        BoolQueryBuilder filter = QueryBuilders.boolQuery().must( QueryBuilders.matchAllQuery() )
+        BoolQueryBuilder filter = QueryBuilders.boolQuery().mustNot( QueryBuilders.matchAllQuery() )
                 .filter( QueryBuilders.geoDistanceQuery( "point" ).point( lat, lon ).distance( distance + "km" ) );
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();

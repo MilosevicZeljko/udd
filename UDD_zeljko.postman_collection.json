@@ -1,0 +1,299 @@
+{
+	"info": {
+		"_postman_id": "a36e673b-2806-4a6e-9405-51a12bad1e31",
+		"name": "UDD_zeljko",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get all books",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/book/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"book",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/api/book/search",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"field\": \"genre\",\r\n        \"value\": \"jo\",\r\n        \"phraseQuery\": true,\r\n        \"logic\": \"OR\"\r\n    }\r\n    \r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/book/search",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"book",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:9200/book",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:9200/book",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"book"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/api/book/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/E:/github/search/back/pdf/Crvenkapa.pdf"
+						},
+						{
+							"key": "title",
+							"value": "adsf",
+							"type": "text"
+						},
+						{
+							"key": "id",
+							"value": "adsfadsfadsf",
+							"type": "text"
+						},
+						{
+							"key": "authorFirstName",
+							"value": "adfjklsglfjlks",
+							"type": "text"
+						},
+						{
+							"key": "authorLastName",
+							"value": "dsafasdf",
+							"type": "text"
+						},
+						{
+							"key": "isbn",
+							"value": "1253",
+							"type": "text"
+						},
+						{
+							"key": "genre",
+							"value": "joj",
+							"type": "text"
+						},
+						{
+							"key": "latitude",
+							"value": "20.357",
+							"type": "text"
+						},
+						{
+							"key": "longitude",
+							"value": "45.36",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/api/book/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"book",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/api/book/check",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/E:/github/search/back/pdf/Literarno udruženje.pdf"
+						},
+						{
+							"key": "title",
+							"value": "pop",
+							"type": "text"
+						},
+						{
+							"key": "id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "authorFirstName",
+							"value": "Jasar",
+							"type": "text"
+						},
+						{
+							"key": "authorLastName",
+							"value": "Ahmedovski",
+							"type": "text"
+						},
+						{
+							"key": "isbn",
+							"value": "1253",
+							"type": "text"
+						},
+						{
+							"key": "genre",
+							"value": "joj",
+							"type": "text"
+						},
+						{
+							"key": "latitude",
+							"value": "20.357",
+							"type": "text"
+						},
+						{
+							"key": "longitude",
+							"value": "45.36",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/api/book/check",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"book",
+						"check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/api/reader/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"lat\": 40.63,\r\n    \"lon\": 22.95,\r\n    \"email\": \"mejl@mejl.com\",\r\n    \"firstName\": \"Pera\",\r\n    \"lastName\": \"Peric\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/reader/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"reader",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/api/reader/lat/40.6/lon/22.9/distance/10000",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/reader/lat/45.6/lon/20.1/distance/1000000",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"reader",
+						"lat",
+						"45.6",
+						"lon",
+						"20.1",
+						"distance",
+						"1000000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "plagiator login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"user@mailinator.com\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8000/api/login",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
