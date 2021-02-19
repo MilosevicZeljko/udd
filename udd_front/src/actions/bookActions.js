@@ -14,6 +14,7 @@ export const createBook = (data) => async (dispatch) => {
 };
 
 export const searchBook = (data) => async (dispatch) => {
+	dispatch(clearBooks());
 	axios.post('/api/book/search', data).then((response) => {
 		console.log('response', response.data);
 		dispatch({
@@ -22,3 +23,7 @@ export const searchBook = (data) => async (dispatch) => {
 		});
 	});
 };
+
+export const clearBooks = () => ({
+	type: 'CLEAR_BOOKS',
+});

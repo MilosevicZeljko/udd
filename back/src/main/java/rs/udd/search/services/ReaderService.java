@@ -41,9 +41,7 @@ public class ReaderService
         betaReader.setFirstName( reader.getFirstName() );
         betaReader.setLastName( reader.getLastName() );
         betaReader.setId( "" + BetaReader.idInt );
-        System.err.println( BetaReader.idInt );
         BetaReader.idInt = BetaReader.idInt + 1;
-        System.err.println( BetaReader.idInt );
         GeoPoint geoPoint = new GeoPoint( reader.getLat(), reader.getLon() );
         betaReader.setPoint( geoPoint );
 

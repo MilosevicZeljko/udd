@@ -145,6 +145,7 @@ public class ElasticSearchConfiguration extends AbstractElasticsearchConfigurati
             createIndexRequest.mapping( xContentBuilder );
 
             CreateIndexResponse create = elasticsearchClient.indices().create( createIndexRequest, RequestOptions.DEFAULT );
+
             System.err.println( create );
 
         }
@@ -214,6 +215,7 @@ public class ElasticSearchConfiguration extends AbstractElasticsearchConfigurati
             createIndexRequest.mapping( xContentBuilder );
 
             CreateIndexResponse create = elasticsearchClient.indices().create( createIndexRequest, RequestOptions.DEFAULT );
+
             System.err.println( create );
 
         }

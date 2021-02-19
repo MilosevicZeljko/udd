@@ -142,14 +142,10 @@ public class BookService
                     boolQuery.must( QueryBuilders.matchPhrasePrefixQuery( field, value ) );
                     // boolQuery.must( QueryBuilders.matchPhraseQuery( field, value ) );
 
-                    System.err.println( "AND PHRASE" );
-                    System.err.println( field );
-                    System.err.println( value );
                 }
                 else
                 {
                     boolQuery.must( QueryBuilders.matchQuery( field, value ) );
-                    System.err.println( "AND" );
                 }
             }
             else
@@ -157,13 +153,10 @@ public class BookService
                 if ( phrase )
                 {
                     boolQuery.should( QueryBuilders.matchPhrasePrefixQuery( field, value ) );
-                    // boolQuery.should( QueryBuilders.matchPhraseQuery( field, value ) );
-                    System.err.println( "OR PHRASE" );
                 }
                 else
                 {
                     boolQuery.should( QueryBuilders.matchQuery( field, value ) );
-                    System.err.println( "OR" );
                 }
             }
 
@@ -290,7 +283,6 @@ public class BookService
     {
 
         File convertedFile = new File( "pdf" + File.separator + file.getOriginalFilename() );
-        System.err.println( convertedFile.getAbsolutePath() );
         convertedFile.createNewFile();
         FileOutputStream fos = new FileOutputStream( convertedFile );
         fos.write( file.getBytes() );
@@ -320,6 +312,63 @@ public class BookService
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
         MatchQueryBuilder matchQuery = QueryBuilders.matchQuery( "textContent", newBook.getTextContent() ).minimumShouldMatch( "50%" );
+
+        HighlightBuilder highlightBuilder = new HighlightBuilder();
+        HighlightBuilder.Field highlightContent = new HighlightBuilder.Field( "textContent" );
+        highlightContent.highlighterType( "unified" );
+
+        searchSourceBuilder.query( matchQuery ).fetchSource( FETCH_FIELDS, null ).highlighter( highlightBuilder );
+
+        searchRequest.indices( Book.INDEX );
+        searchRequest.source( searchSourceBuilder );
+
+        SearchResponse search = restHighLevelClient.search( searchRequest, RequestOptions.DEFAULT );
+
+        ArrayList< Book > returnValues = new ArrayList<>();
+
+        search.getHits().forEach( hit ->
+        {
+            Map< String, HighlightField > highlightFields = hit.getHighlightFields();
+            HighlightField highlightField = highlightFields.get( "textContent" );
+
+            Book currentBook = new Gson().fromJson( hit.getSourceAsString(), Book.class );
+
+            if ( Optional.ofNullable( highlightField ).isPresent() )
+            {
+                Text[] fragments = highlightField.fragments();
+                String contentHighlight = "";
+                for ( Text text : fragments )
+                {
+                    contentHighlight = contentHighlight + text.toString() + "\n";
+                }
+                currentBook.setTextContent( contentHighlight );
+            }
+            else
+            {
+                currentBook.setTextContent( currentBook.getTextContent().substring( 0, 200 ) + " ..." );
+            }
+            returnValues.add( currentBook );
+
+        } );
+
+        return new ResponseEntity<>( returnValues, HttpStatus.OK );
+
+        // return null;
+    }
+
+
+    public ResponseEntity< ? > plagiarismSimplified( @RequestBody BookDTO book ) throws IOException
+    {
+
+        DocumentHandler handler = getHandler( book.getFile().getOriginalFilename() );
+        File convertedFile = convert( book.getFile() );
+        String textForChecking = handler.getText( convertedFile );
+
+        SearchRequest searchRequest = new SearchRequest();
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        MatchQueryBuilder matchQuery = QueryBuilders.matchQuery( "textContent", textForChecking ).minimumShouldMatch( "50%" );
 
         HighlightBuilder highlightBuilder = new HighlightBuilder();
         HighlightBuilder.Field highlightContent = new HighlightBuilder.Field( "textContent" );
