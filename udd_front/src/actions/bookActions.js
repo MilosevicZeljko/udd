@@ -12,3 +12,13 @@ export const createBook = (data) => async (dispatch) => {
 			alert('Грешка');
 		});
 };
+
+export const searchBook = (data) => async (dispatch) => {
+	axios.post('/api/book/search', data).then((response) => {
+		console.log('response', response.data);
+		dispatch({
+			type: 'SEARCH_BOOK',
+			payload: response.data,
+		});
+	});
+};
