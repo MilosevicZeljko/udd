@@ -18,7 +18,8 @@ export const OneBook = ({ isbn, authorFirstName, authorLastName, title, genre, t
 					AUTHOR: {authorFirstName} {authorLastName}
 				</Card.Meta>
 
-				<Card.Description>{textContent}</Card.Description>
+				<div dangerouslySetInnerHTML={{ __html: textContent }} />
+				<Card.Description />
 			</Card.Content>
 			<Card.Content extra>
 				<a href={`http://${url}`}>

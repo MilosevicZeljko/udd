@@ -27,3 +27,20 @@ export const searchBook = (data) => async (dispatch) => {
 export const clearBooks = () => ({
 	type: 'CLEAR_BOOKS',
 });
+
+export const searchPlagiarism = (data) => async (dispatch) => {
+	dispatch(clearBooks());
+
+	axios
+		.post('/api/book/check', data)
+		.then((response) => {
+			console.log('response', response.data);
+			dispatch({
+				type: 'SEARCH_BOOK',
+				payload: response.data,
+			});
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+};

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Card, Checkbox, Divider, Grid, Header, Segment } from 'semantic-ui-react';
-import { searchBook } from '../../actions/bookActions';
+import { clearBooks, searchBook } from '../../actions/bookActions';
 import { OneBook } from './OneBook';
+import './SearchBookContainer.css';
 const SearchBookContainer = (props) => {
 	const [ title, setTitle ] = useState('');
 	const [ authorFirstName, setAuthorFirstName ] = useState('');
@@ -21,6 +22,12 @@ const SearchBookContainer = (props) => {
 	const [ mustLastName, setMustLastName ] = useState(false);
 	const [ mustGenre, setMustGenre ] = useState(false);
 	const [ mustTextContent, setMustTextContent ] = useState(false);
+
+	useEffect(() => {
+		return () => {
+			props.clearBooks();
+		};
+	}, []);
 
 	const onSubmit = (e) => {
 		e.preventDefault();
@@ -310,6 +317,6 @@ const mapStateToProps = (state) => ({
 	books: state.books.books,
 });
 
-const mapDispatchToProps = { searchBook };
+const mapDispatchToProps = { searchBook, clearBooks };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBookContainer);

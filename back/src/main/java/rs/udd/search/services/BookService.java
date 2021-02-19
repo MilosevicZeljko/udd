@@ -303,6 +303,12 @@ public class BookService
     }
 
 
+    /**
+     * @deprecated
+     * @param book
+     * @return
+     * @throws IOException
+     */
     public ResponseEntity< ? > plagiarism( @RequestBody BookDTO book ) throws IOException
     {
 

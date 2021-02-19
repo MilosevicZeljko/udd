@@ -37,7 +37,7 @@ public class BookController
     @PostMapping( "/check" )
     public ResponseEntity< ? > checkPlagiarism( BookDTO book ) throws IOException
     {
-        return this.service.plagiarism( book );
+        return this.service.plagiarismSimplified( book );
 
     }
 
