@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Card, Icon, Image } from 'semantic-ui-react';
+import GeoLocationModal from '../readers/GeoLocationModal';
 
-export const OneBook = ({ isbn, authorFirstName, authorLastName, title, genre, textContent, url }) => {
+export const OneBook = ({ isbn, authorFirstName, authorLastName, title, genre, textContent, url, lat, lon }) => {
+	const [ modal, setModal ] = useState(false);
+
 	return (
 		<Card>
 			<Image
@@ -22,11 +25,22 @@ export const OneBook = ({ isbn, authorFirstName, authorLastName, title, genre, t
 				<Card.Description />
 			</Card.Content>
 			<Card.Content extra>
-				<a href={`http://${url}`}>
-					<Icon name='download' />
-					Download
-				</a>
+				<form className='ui form'>
+					<div className='field'>
+						<a href={`http://${url}`}>
+							<Icon name='download' />
+							Download
+						</a>
+					</div>
+					<div className='field'>
+						<div onClick={() => setModal(true)}>
+							<Icon name='search' />
+							Претражи Бета Читаоце
+						</div>
+					</div>
+				</form>
 			</Card.Content>
+			<GeoLocationModal show={modal} hide={setModal} lat={lat} lon={lon} />
 		</Card>
 	);
 };

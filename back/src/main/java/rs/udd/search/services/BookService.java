@@ -55,7 +55,7 @@ public class BookService
 {
 
     final private static String[] FETCH_FIELDS =
-    { "id", "filename", "textContent", "authorFirstName", "isbn", "authorLastName", "title", "genre", "url" };
+    { "id", "filename", "textContent", "authorFirstName", "isbn", "authorLastName", "title", "genre", "url", "point" };
 
     @Autowired
     RestHighLevelClient restHighLevelClient;

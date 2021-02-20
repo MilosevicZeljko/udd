@@ -16,7 +16,6 @@ export const createBook = (data) => async (dispatch) => {
 export const searchBook = (data) => async (dispatch) => {
 	dispatch(clearBooks());
 	axios.post('/api/book/search', data).then((response) => {
-		console.log('response', response.data);
 		dispatch({
 			type: 'SEARCH_BOOK',
 			payload: response.data,
@@ -34,7 +33,6 @@ export const searchPlagiarism = (data) => async (dispatch) => {
 	axios
 		.post('/api/book/check', data)
 		.then((response) => {
-			console.log('response', response.data);
 			dispatch({
 				type: 'SEARCH_BOOK',
 				payload: response.data,

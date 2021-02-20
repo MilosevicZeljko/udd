@@ -34,12 +34,6 @@ const SearchBookContainer = (props) => {
 
 		const list = [];
 
-		console.log('phraseTitle', phraseTitle);
-		console.log('phraseFirstName', phraseFirstName);
-		console.log('phraseLastName', phraseLastName);
-		console.log('phraseGenre', phraseGenre);
-		console.log('phraseTextContent', phraseTextContent);
-
 		if (title.length != 0) {
 			const data = {};
 			data.field = 'title';
@@ -302,6 +296,8 @@ const SearchBookContainer = (props) => {
 										genre={i.genre}
 										textContent={i.textContent}
 										url={i.url}
+										lat={i.point.lat}
+										lon={i.point.lon}
 									/>
 								);
 							})}
