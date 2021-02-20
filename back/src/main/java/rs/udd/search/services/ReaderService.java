@@ -13,7 +13,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,11 +60,25 @@ public class ReaderService
     {
         SearchRequest searchRequest = new SearchRequest();
 
-        BoolQueryBuilder filter = QueryBuilders.boolQuery().must( QueryBuilders.matchAllQuery() )
-                .filter( QueryBuilders.geoDistanceQuery( "point" ).point( lat, lon ).distance( distance + "km" ) );
+        // BoolQueryBuilder filter = QueryBuilders.boolQuery().must( QueryBuilders.matchAllQuery() )
+        //         .filter( QueryBuilders.geoDistanceQuery( "point" ).point( lat, lon ).distance( distance + "km" ) );
+
+
+                // geo query for searching in area of specified radius
+        QueryBuilder queryBuilder = QueryBuilders
+        .boolQuery()
+        .must(QueryBuilders.matchAllQuery())
+        .mustNot(
+            QueryBuilders
+                .geoDistanceQuery("point")
+                .point(lat, lon)
+                .distance(distance + "km")
+        );
+
+
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query( filter );
+        searchSourceBuilder.query( queryBuilder );
 
         searchRequest.indices( BetaReader.INDEX );
         searchRequest.source( searchSourceBuilder );
