@@ -1,5 +1,4 @@
-# UDD - system for managing digital documents
-
+# UDD - system for managing digital documents on serbian language
 To run this application, you have to install [Node.js](https://nodejs.org/en/), [Elasticsearch 7.4.0](https://www.elastic.co/downloads/past-releases/elasticsearch-7-4-0) and [SerbianAnalyzerElasticSearchPlugin ](https://github.com/chenejac/udd06)
 
 This repo contains Spring Boot backend and ReactJS front end.
